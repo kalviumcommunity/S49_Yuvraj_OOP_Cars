@@ -53,9 +53,24 @@ class Driver {
 };
 
 int main() {
-    Car myCar("Red", "Toyota", "Corolla");
-    Driver driver("xyz", 30, myCar);
-    driver.drive();
-    driver.park();
+    const int numCars = 3; // Define the size of the array
+    Car cars[numCars] = {
+        Car("Red", "Toyota", "Corolla"),
+        Car("Blue", "Honda", "Civic"),
+        Car("Green", "Ford", "Focus")
+    };
+
+    const int numDrivers = 3;
+    Driver drivers[numDrivers] = {
+        Driver("Alice", 30, cars[0]),
+        Driver("Bob", 25, cars[1]),
+        Driver("Charlie", 35, cars[2])
+    };
+
+    for (int i = 0; i < numDrivers; ++i) {
+        drivers[i].drive();
+        drivers[i].park();
+    }
+
     return 0;
 }
