@@ -12,20 +12,20 @@ class Car {
         Car(string c, string m, string mo) : color(c), make(m), model(mo) {}
 
         void start() {
-            cout << color << " " << make << " " << model << " started." << endl;
+            cout << this->color << " " << this->make << " " << this->model << " started." << endl;
         }
 
         void stop() {
-            cout << color << " " << make << " " << model << " stopped." << endl;
+            cout << this->color << " " << this->make << " " << this->model << " stopped." << endl;
         }
 
         void accelerate() {
-            cout << color << " " << make << " " << model << " accelerating." << endl;
+            cout << this->color << " " << this->make << " " << this->model << " accelerating." << endl;
         }
 
-        string getColor() const { return color; }
-        string getMake() const { return make; }
-        string getModel() const { return model; }
+        string getColor() const { return this->color; }
+        string getMake() const { return this->make; }
+        string getModel() const { return this->model; }
 };
 
 class Driver {
@@ -38,18 +38,18 @@ class Driver {
         Driver(string n, int a, Car c) : name(n), age(a), car(c) {}
 
         void drive() {
-            cout << name << " is driving the " << car.getColor() << " " << car.getMake() << " " << car.getModel() << "." << endl;
-            car.start();
-            car.accelerate();
+            cout << this->name << " is driving the " << this->car.getColor() << " " << this->car.getMake() << " " << this->car.getModel() << "." << endl;
+            this->car.start();
+            this->car.accelerate();
         }
 
         void park() {
-            cout << name << " is parking the " << car.getColor() << " " << car.getMake() << " " << car.getModel() << "." << endl;
-            car.stop();
+            cout << this->name << " is parking the " << this->car.getColor() << " " << this->car.getMake() << " " << this->car.getModel() << "." << endl;
+            this->car.stop();
         }
 
-        string getName() const { return name; }
-        int getAge() const { return age; }
+        string getName() const { return this->name; }
+        int getAge() const { return this->age; }
 };
 
 int main() {
