@@ -54,23 +54,29 @@ class Driver {
 
 int main() {
     const int numCars = 3; // Define the size of the array
-    Car cars[numCars] = {
+
+    // Dynamically allocate memory for cars array
+    Car* cars = new Car[numCars] {
         Car("Red", "Toyota", "Corolla"),
         Car("Blue", "Honda", "Civic"),
         Car("Green", "Ford", "Focus")
     };
 
-    const int numDrivers = 3;
-    Driver drivers[numDrivers] = {
+    // Dynamically allocate memory for drivers array
+    Driver* drivers = new Driver[numCars] {
         Driver("Alice", 30, cars[0]),
         Driver("Bob", 25, cars[1]),
         Driver("Charlie", 35, cars[2])
     };
 
-    for (int i = 0; i < numDrivers; ++i) {
+    for (int i = 0; i < numCars; ++i) {
         drivers[i].drive();
         drivers[i].park();
     }
+
+    // Free the dynamically allocated memory
+    delete[] cars;
+    delete[] drivers;
 
     return 0;
 }
