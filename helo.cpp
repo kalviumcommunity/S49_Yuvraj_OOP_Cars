@@ -32,6 +32,11 @@ class Car {
         string getColor() const { return this->color; }
         string getMake() const { return this->make; }
         string getModel() const { return this->model; }
+
+        // Static member function to get the total number of cars
+        static int getTotalCars() {
+            return totalCars;
+        }
 };
 
 // Initialize the static variable for total cars
@@ -65,6 +70,11 @@ class Driver {
 
         string getName() const { return this->name; }
         int getAge() const { return this->age; }
+
+        // Static member function to get the total number of drivers
+        static int getTotalDrivers() {
+            return totalDrivers;
+        }
 };
 
 // Initialize the static variable for total drivers
@@ -92,9 +102,9 @@ int main() {
         drivers[i].park();
     }
 
-    // Display the total number of cars and drivers created
-    cout << "Total number of cars: " << Car::totalCars << endl;
-    cout << "Total number of drivers: " << Driver::totalDrivers << endl;
+    // Display the total number of cars and drivers created using static member functions
+    cout << "Total number of cars: " << Car::getTotalCars() << endl;
+    cout << "Total number of drivers: " << Driver::getTotalDrivers() << endl;
 
     // Free the dynamically allocated memory
     delete[] cars;
