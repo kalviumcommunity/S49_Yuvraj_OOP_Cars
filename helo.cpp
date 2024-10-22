@@ -17,21 +17,27 @@ class Car {
             totalCars++;
         }
 
+        // Accessor (getter) methods
+        string getColor() const { return color; }
+        string getMake() const { return make; }
+        string getModel() const { return model; }
+
+        // Mutator (setter) methods
+        void setColor(const string& c) { color = c; }
+        void setMake(const string& m) { make = m; }
+        void setModel(const string& mo) { model = mo; }
+
         void start() {
-            cout << this->color << " " << this->make << " " << this->model << " started." << endl;
+            cout << color << " " << make << " " << model << " started." << endl;
         }
 
         void stop() {
-            cout << this->color << " " << this->make << " " << this->model << " stopped." << endl;
+            cout << color << " " << make << " " << model << " stopped." << endl;
         }
 
         void accelerate() {
-            cout << this->color << " " << this->make << " " << this->model << " accelerating." << endl;
+            cout << color << " " << make << " " << model << " accelerating." << endl;
         }
-
-        string getColor() const { return this->color; }
-        string getMake() const { return this->make; }
-        string getModel() const { return this->model; }
 
         // Static member function to get the total number of cars
         static int getTotalCars() {
@@ -57,19 +63,26 @@ class Driver {
             totalDrivers++;
         }
 
+        // Accessor (getter) methods
+        string getName() const { return name; }
+        int getAge() const { return age; }
+        Car getCar() const { return car; }
+
+        // Mutator (setter) methods
+        void setName(const string& n) { name = n; }
+        void setAge(int a) { age = a; }
+        void setCar(const Car& c) { car = c; }
+
         void drive() {
-            cout << this->name << " is driving the " << this->car.getColor() << " " << this->car.getMake() << " " << this->car.getModel() << "." << endl;
-            this->car.start();
-            this->car.accelerate();
+            cout << name << " is driving the " << car.getColor() << " " << car.getMake() << " " << car.getModel() << "." << endl;
+            car.start();
+            car.accelerate();
         }
 
         void park() {
-            cout << this->name << " is parking the " << this->car.getColor() << " " << this->car.getMake() << " " << this->car.getModel() << "." << endl;
-            this->car.stop();
+            cout << name << " is parking the " << car.getColor() << " " << car.getMake() << " " << car.getModel() << "." << endl;
+            car.stop();
         }
-
-        string getName() const { return this->name; }
-        int getAge() const { return this->age; }
 
         // Static member function to get the total number of drivers
         static int getTotalDrivers() {
@@ -101,6 +114,13 @@ int main() {
         drivers[i].drive();
         drivers[i].park();
     }
+
+    // Example of using the mutator methods to modify car and driver details
+    drivers[0].setName("Alicia");
+    drivers[0].setAge(31);
+    drivers[0].getCar().setColor("Pink");
+
+    cout << drivers[0].getName() << " is now driving a " << drivers[0].getCar().getColor() << " car." << endl;
 
     // Display the total number of cars and drivers created using static member functions
     cout << "Total number of cars: " << Car::getTotalCars() << endl;
