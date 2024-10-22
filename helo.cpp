@@ -4,30 +4,28 @@ using namespace std;
 
 class Car {
     private:
-        string color;
+        string color;   // Color is private to hide internal details
         string make;
         string model;
-    
+
+    protected:
+        // Protected function to handle starting the engine, not accessible directly by users
+        void startEngine() {
+            cout << "Engine started." << endl;
+        }
+
     public:
         // Static variable to keep track of the total number of cars
         static int totalCars;
 
+        // Constructor
         Car(string c, string m, string mo) : color(c), make(m), model(mo) {
-            // Increment the total car count whenever a car object is created
             totalCars++;
         }
 
-        // Accessor (getter) methods
-        string getColor() const { return color; }
-        string getMake() const { return make; }
-        string getModel() const { return model; }
-
-        // Mutator (setter) methods
-        void setColor(const string& c) { color = c; }
-        void setMake(const string& m) { make = m; }
-        void setModel(const string& mo) { model = mo; }
-
+        // Public interface methods
         void start() {
+            startEngine();  // Start engine through the protected function
             cout << color << " " << make << " " << model << " started." << endl;
         }
 
@@ -38,6 +36,16 @@ class Car {
         void accelerate() {
             cout << color << " " << make << " " << model << " accelerating." << endl;
         }
+
+        // Accessor (getter) methods - abstraction by providing controlled access to private data
+        string getColor() const { return color; }
+        string getMake() const { return make; }
+        string getModel() const { return model; }
+
+        // Mutator (setter) methods
+        void setColor(const string& c) { color = c; }
+        void setMake(const string& m) { make = m; }
+        void setModel(const string& mo) { model = mo; }
 
         // Static member function to get the total number of cars
         static int getTotalCars() {
@@ -50,39 +58,41 @@ int Car::totalCars = 0;
 
 class Driver {
     private:
-        string name;
+        string name;  // Encapsulated data: the driver's name and age are hidden from direct access
         int age;
-        Car car;
+
+    protected:
+        Car car;  // Protected car object for possible subclass use
 
     public:
         // Static variable to keep track of the total number of drivers
         static int totalDrivers;
 
+        // Constructor
         Driver(string n, int a, Car c) : name(n), age(a), car(c) {
-            // Increment the total driver count whenever a driver object is created
             totalDrivers++;
         }
 
-        // Accessor (getter) methods
-        string getName() const { return name; }
-        int getAge() const { return age; }
-        Car getCar() const { return car; }
-
-        // Mutator (setter) methods
-        void setName(const string& n) { name = n; }
-        void setAge(int a) { age = a; }
-        void setCar(const Car& c) { car = c; }
-
+        // Public method for driving - users don't need to know how it's implemented internally
         void drive() {
             cout << name << " is driving the " << car.getColor() << " " << car.getMake() << " " << car.getModel() << "." << endl;
             car.start();
             car.accelerate();
         }
 
+        // Public method for parking
         void park() {
             cout << name << " is parking the " << car.getColor() << " " << car.getMake() << " " << car.getModel() << "." << endl;
             car.stop();
         }
+
+        // Accessor (getter) methods for controlled access to private data
+        string getName() const { return name; }
+        int getAge() const { return age; }
+
+        // Mutator (setter) methods for controlled modification of private data
+        void setName(const string& n) { name = n; }
+        void setAge(int a) { age = a; }
 
         // Static member function to get the total number of drivers
         static int getTotalDrivers() {
@@ -114,13 +124,6 @@ int main() {
         drivers[i].drive();
         drivers[i].park();
     }
-
-    // Example of using the mutator methods to modify car and driver details
-    drivers[0].setName("Alicia");
-    drivers[0].setAge(31);
-    drivers[0].getCar().setColor("Pink");
-
-    cout << drivers[0].getName() << " is now driving a " << drivers[0].getCar().getColor() << " car." << endl;
 
     // Display the total number of cars and drivers created using static member functions
     cout << "Total number of cars: " << Car::getTotalCars() << endl;
