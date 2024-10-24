@@ -18,7 +18,12 @@ class Car {
         // Static variable to keep track of the total number of cars
         static int totalCars;
 
-        // Constructor
+        // Default Constructor
+        Car() : color("Unknown"), make("Unknown"), model("Unknown") {
+            totalCars++;
+        }
+
+        // Parameterized Constructor
         Car(string c, string m, string mo) : color(c), make(m), model(mo) {
             totalCars++;
         }
@@ -68,7 +73,12 @@ class Driver {
         // Static variable to keep track of the total number of drivers
         static int totalDrivers;
 
-        // Constructor
+        // Default Constructor
+        Driver() : name("Unknown"), age(0), car() {
+            totalDrivers++;
+        }
+
+        // Parameterized Constructor
         Driver(string n, int a, Car c) : name(n), age(a), car(c) {
             totalDrivers++;
         }
@@ -106,18 +116,18 @@ int Driver::totalDrivers = 0;
 int main() {
     const int numCars = 3; // Define the size of the array
 
-    // Dynamically allocate memory for cars array
+    // Dynamically allocate memory for cars array using both default and parameterized constructors
     Car* cars = new Car[numCars] {
-        Car("Red", "Toyota", "Corolla"),
-        Car("Blue", "Honda", "Civic"),
-        Car("Green", "Ford", "Focus")
+        Car("Red", "Toyota", "Corolla"),    // Parameterized constructor
+        Car(),                             // Default constructor
+        Car("Green", "Ford", "Focus")      // Parameterized constructor
     };
 
-    // Dynamically allocate memory for drivers array
+    // Dynamically allocate memory for drivers array using both default and parameterized constructors
     Driver* drivers = new Driver[numCars] {
-        Driver("Alice", 30, cars[0]),
-        Driver("Bob", 25, cars[1]),
-        Driver("Charlie", 35, cars[2])
+        Driver("Alice", 30, cars[0]),      // Parameterized constructor
+        Driver(),                          // Default constructor
+        Driver("Charlie", 35, cars[2])     // Parameterized constructor
     };
 
     for (int i = 0; i < numCars; ++i) {
