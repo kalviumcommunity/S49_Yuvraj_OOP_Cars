@@ -2,35 +2,48 @@
 #include <string>
 using namespace std;
 
-class Car {
+// Base class Vehicle (Single inheritance)
+class Vehicle {
+    private:
+        int wheels;
+    
+    public:
+        Vehicle(int w = 4) : wheels(w) {}
+
+        int getWheels() const { return wheels; }
+
+        void displayVehicle() const {
+            cout << "Vehicle with " << wheels << " wheels." << endl;
+        }
+};
+
+// Derived class Car (Single inheritance from Vehicle)
+class Car : public Vehicle {
     private:
         string color;   // Color is private to hide internal details
         string make;
         string model;
 
     protected:
-        // Protected function to handle starting the engine, not accessible directly by users
         void startEngine() {
             cout << "Engine started." << endl;
         }
 
     public:
-        // Static variable to keep track of the total number of cars
         static int totalCars;
 
         // Default Constructor
-        Car() : color("Unknown"), make("Unknown"), model("Unknown") {
+        Car() : Vehicle(), color("Unknown"), make("Unknown"), model("Unknown") {
             totalCars++;
         }
 
         // Parameterized Constructor
-        Car(string c, string m, string mo) : color(c), make(m), model(mo) {
+        Car(string c, string m, string mo) : Vehicle(4), color(c), make(m), model(mo) {
             totalCars++;
         }
 
-        // Public interface methods
         void start() {
-            startEngine();  // Start engine through the protected function
+            startEngine();
             cout << color << " " << make << " " << model << " started." << endl;
         }
 
@@ -42,88 +55,75 @@ class Car {
             cout << color << " " << make << " " << model << " accelerating." << endl;
         }
 
-        // Accessor (getter) methods - abstraction by providing controlled access to private data
         string getColor() const { return color; }
         string getMake() const { return make; }
         string getModel() const { return model; }
 
-        // Mutator (setter) methods
         void setColor(const string& c) { color = c; }
         void setMake(const string& m) { make = m; }
         void setModel(const string& mo) { model = mo; }
 
-        // Static member function to get the total number of cars
         static int getTotalCars() {
             return totalCars;
         }
 };
 
-// Initialize the static variable for total cars
 int Car::totalCars = 0;
 
-class Driver {
+// Derived class Driver (Multilevel inheritance: Driver -> Car -> Vehicle)
+class Driver : public Car {
     private:
-        string name;  // Encapsulated data: the driver's name and age are hidden from direct access
+        string name;
         int age;
 
-    protected:
-        Car car;  // Protected car object for possible subclass use
-
     public:
-        // Static variable to keep track of the total number of drivers
         static int totalDrivers;
 
         // Default Constructor
-        Driver() : name("Unknown"), age(0), car() {
+        Driver() : name("Unknown"), age(0), Car() {
             totalDrivers++;
         }
 
         // Parameterized Constructor
-        Driver(string n, int a, Car c) : name(n), age(a), car(c) {
+        Driver(string n, int a, const Car& c) : name(n), age(a), Car(c.getColor(), c.getMake(), c.getModel()) {
             totalDrivers++;
         }
 
-        // Public method for driving - users don't need to know how it's implemented internally
         void drive() {
-            cout << name << " is driving the " << car.getColor() << " " << car.getMake() << " " << car.getModel() << "." << endl;
-            car.start();
-            car.accelerate();
+            cout << name << " is driving the " << getColor() << " " << getMake() << " " << getModel() << "." << endl;
+            start();
+            accelerate();
         }
 
-        // Public method for parking
         void park() {
-            cout << name << " is parking the " << car.getColor() << " " << car.getMake() << " " << car.getModel() << "." << endl;
-            car.stop();
+            cout << name << " is parking the " << getColor() << " " << getMake() << " " << getModel() << "." << endl;
+            stop();
         }
 
-        // Accessor (getter) methods for controlled access to private data
         string getName() const { return name; }
         int getAge() const { return age; }
 
-        // Mutator (setter) methods for controlled modification of private data
         void setName(const string& n) { name = n; }
         void setAge(int a) { age = a; }
 
-        // Static member function to get the total number of drivers
         static int getTotalDrivers() {
             return totalDrivers;
         }
 };
 
-// Initialize the static variable for total drivers
 int Driver::totalDrivers = 0;
 
 int main() {
-    const int numCars = 3; // Define the size of the array
+    const int numCars = 3;
 
-    // Dynamically allocate memory for cars array using both default and parameterized constructors
+    // Creating Car objects
     Car* cars = new Car[numCars] {
         Car("Red", "Toyota", "Corolla"),    // Parameterized constructor
         Car(),                             // Default constructor
         Car("Green", "Ford", "Focus")      // Parameterized constructor
     };
 
-    // Dynamically allocate memory for drivers array using both default and parameterized constructors
+    // Creating Driver objects using multilevel inheritance
     Driver* drivers = new Driver[numCars] {
         Driver("Alice", 30, cars[0]),      // Parameterized constructor
         Driver(),                          // Default constructor
@@ -135,11 +135,11 @@ int main() {
         drivers[i].park();
     }
 
-    // Display the total number of cars and drivers created using static member functions
+    // Display the total number of cars and drivers
     cout << "Total number of cars: " << Car::getTotalCars() << endl;
     cout << "Total number of drivers: " << Driver::getTotalDrivers() << endl;
 
-    // Free the dynamically allocated memory
+    // Free allocated memory
     delete[] cars;
     delete[] drivers;
 
