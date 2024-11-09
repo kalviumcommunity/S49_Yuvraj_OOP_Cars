@@ -6,14 +6,19 @@ using namespace std;
 class Vehicle {
     private:
         int wheels;
-    
+
     public:
         Vehicle(int w = 4) : wheels(w) {}
 
         int getWheels() const { return wheels; }
 
+        // Function overloading for polymorphism
         void displayVehicle() const {
             cout << "Vehicle with " << wheels << " wheels." << endl;
+        }
+
+        void displayVehicle(const string& message) const {  // Overloaded version
+            cout << message << " - Vehicle with " << wheels << " wheels." << endl;
         }
 };
 
@@ -32,12 +37,11 @@ class Car : public Vehicle {
     public:
         static int totalCars;
 
-        // Default Constructor
+        // Constructor Overloading
         Car() : Vehicle(), color("Unknown"), make("Unknown"), model("Unknown") {
             totalCars++;
         }
 
-        // Parameterized Constructor
         Car(string c, string m, string mo) : Vehicle(4), color(c), make(m), model(mo) {
             totalCars++;
         }
@@ -79,12 +83,10 @@ class Driver : public Car {
     public:
         static int totalDrivers;
 
-        // Default Constructor
         Driver() : name("Unknown"), age(0), Car() {
             totalDrivers++;
         }
 
-        // Parameterized Constructor
         Driver(string n, int a, const Car& c) : name(n), age(a), Car(c.getColor(), c.getMake(), c.getModel()) {
             totalDrivers++;
         }
@@ -134,6 +136,11 @@ int main() {
         drivers[i].drive();
         drivers[i].park();
     }
+
+    // Display information about the vehicle with overloaded functions
+    Vehicle generalVehicle;
+    generalVehicle.displayVehicle();                        // Calls displayVehicle without message
+    generalVehicle.displayVehicle("Special Edition");       // Calls overloaded displayVehicle with message
 
     // Display the total number of cars and drivers
     cout << "Total number of cars: " << Car::getTotalCars() << endl;
