@@ -2,8 +2,14 @@
 #include <string>
 using namespace std;
 
-// Base class Vehicle (Single inheritance)
-class Vehicle {
+// Abstract base class with virtual function
+class Drivable {
+    public:
+        virtual void drive() = 0; // Pure virtual function
+};
+
+// Base class Vehicle (Single inheritance) inheriting from Drivable
+class Vehicle : public Drivable {
     private:
         int wheels;
 
@@ -11,6 +17,11 @@ class Vehicle {
         Vehicle(int w = 4) : wheels(w) {}
 
         int getWheels() const { return wheels; }
+
+        // Virtual function from Drivable class must be defined
+        void drive() override {
+            cout << "Driving a generic vehicle with " << wheels << " wheels." << endl;
+        }
 
         // Function overloading for polymorphism
         void displayVehicle() const {
@@ -75,6 +86,7 @@ class Car : public Vehicle {
 int Car::totalCars = 0;
 
 // Derived class Driver (Multilevel inheritance: Driver -> Car -> Vehicle)
+// Implements drive() as per Drivable interface
 class Driver : public Car {
     private:
         string name;
@@ -91,7 +103,8 @@ class Driver : public Car {
             totalDrivers++;
         }
 
-        void drive() {
+        // Implementing the virtual drive function for Driver specifically
+        void drive() override {
             cout << name << " is driving the " << getColor() << " " << getMake() << " " << getModel() << "." << endl;
             start();
             accelerate();
@@ -133,7 +146,7 @@ int main() {
     };
 
     for (int i = 0; i < numCars; ++i) {
-        drivers[i].drive();
+        drivers[i].drive();  // Calls the overridden drive method in Driver
         drivers[i].park();
     }
 
