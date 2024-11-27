@@ -2,17 +2,27 @@
 #include <string>
 using namespace std;
 
-// Abstract base class Vehicle (Open for extension)
-class Vehicle {
+// Segregated interfaces
+class Startable {
     public:
-        virtual void start() const = 0;  // Pure virtual functions to ensure extensibility
-        virtual void stop() const = 0;
-        virtual void drive() const = 0;
-        virtual ~Vehicle() {}
+        virtual void start() const = 0;
+        virtual ~Startable() {}
 };
 
-// Car class inheriting from Vehicle (Extension of functionality)
-class Car : public Vehicle {
+class Drivable {
+    public:
+        virtual void drive() const = 0;
+        virtual ~Drivable() {}
+};
+
+class Stoppable {
+    public:
+        virtual void stop() const = 0;
+        virtual ~Stoppable() {}
+};
+
+// Car class implementing all interfaces
+class Car : public Startable, public Drivable, public Stoppable {
     private:
         string color;
         string make;
@@ -26,66 +36,57 @@ class Car : public Vehicle {
             cout << color << " " << make << " " << model << " is starting." << endl;
         }
 
-        void stop() const override {
-            cout << color << " " << make << " " << model << " is stopping." << endl;
-        }
-
         void drive() const override {
             cout << color << " " << make << " " << model << " is driving." << endl;
         }
+
+        void stop() const override {
+            cout << color << " " << make << " " << model << " is stopping." << endl;
+        }
 };
 
-// Bike class inheriting from Vehicle (Extension of functionality)
-class Bike : public Vehicle {
+// Bicycle class implementing only Drivable and Stoppable interfaces
+class Bicycle : public Drivable, public Stoppable {
     private:
         string brand;
         string type;
 
     public:
-        Bike(string b = "Unknown", string t = "Unknown") : brand(b), type(t) {}
+        Bicycle(string b = "Unknown", string t = "Unknown") 
+            : brand(b), type(t) {}
 
-        void start() const override {
-            cout << brand << " " << type << " bike is starting." << endl;
+        void drive() const override {
+            cout << brand << " " << type << " bicycle is being pedaled." << endl;
         }
 
         void stop() const override {
-            cout << brand << " " << type << " bike is stopping." << endl;
-        }
-
-        void drive() const override {
-            cout << brand << " " << type << " bike is driving." << endl;
+            cout << brand << " " << type << " bicycle is stopping." << endl;
         }
 };
 
-// CarController class handling vehicles without modification
-class CarController {
-    private:
-        Vehicle* vehicle;
-
+// Controller class working with different segregated interfaces
+class VehicleController {
     public:
-        CarController(Vehicle* v) : vehicle(v) {}
-
-        void operateVehicle() const {
-            vehicle->start();
-            vehicle->drive();
-            vehicle->stop();
+        void operate(Startable* startable, Drivable* drivable, Stoppable* stoppable) const {
+            if (startable) startable->start();
+            if (drivable) drivable->drive();
+            if (stoppable) stoppable->stop();
         }
 };
 
 int main() {
-    // Creating Car and Bike objects
+    // Creating Car and Bicycle objects
     Car car1("Red", "Toyota", "Corolla");
-    Bike bike1("Yamaha", "Sport");
+    Bicycle bike1("Yamaha", "Sport");
 
-    // Using CarController to operate different types of vehicles
-    CarController carController(&car1);
-    CarController bikeController(&bike1);
+    // Creating controller
+    VehicleController controller;
 
     cout << "Operating Car:" << endl;
-    carController.operateVehicle();
+    controller.operate(&car1, &car1, &car1);  // Car implements all three interfaces
 
-    cout << "\nOperating Bike:" << endl;
-    bikeController.operateVehicle();
+    cout << "\nOperating Bicycle:" << endl;
+    controller.operate(nullptr, &bike1, &bike1);  // Bicycle implements only Drivable and Stoppable
 
     return 0;
 }
